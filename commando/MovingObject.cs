@@ -7,34 +7,43 @@ using System.Threading.Tasks;
 
 namespace commando
 {
-    class MovingObject : Drawable
+    public abstract class MovingObject
     {
-        Image img;
+        public Image img { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-
+        public int Width { get; set; }
+        public int Height { get; set; }
         public int SpeedX { get; set; }
-
         public int SpeedY { get; set; }
+        public int Health { get; set; }
 
-        public MovingObject(int x, int y)
+        public MovingObject(int x, int y, int SpeedX, int SpeedY, int Width, int Height, string type, int Health)
         {
             this.X = x;
             this.Y = y;
-            this.SpeedX = 0;
-            this.SpeedY = 5;
-            img = Image.FromFile(@"C:\Users\Duck\Desktop\vp\player.jpg");
-
+            this.SpeedX = SpeedX;
+            this.SpeedY = SpeedY;
+            this.Width = Width;
+            this.Height = Height;
+            this.Health = Health;
+            img = Utils.getImg(type);
         }
         public void Draw(Graphics g)
         {
-
-            SolidBrush br = new SolidBrush(Color.Black);
-            //g.FillEllipse(br, X + SpeedX - 5, Y + SpeedY - 5, 20, 20);
-            
-            g.DrawImage(img, X + SpeedX - 5, Y + SpeedY - 5, 30, 30);
-            br.Dispose();
+            g.DrawImage(img, X, Y, Width, Height);
         }
+       
+
+        public bool IsCollidingWith(MovingObject o)
+        {
+            return (this.X <= o.X + o.Width && this.X + this.Width >= o.X) &&
+                    (this.Y <= o.Y + o.Height && this.Y + this.Height >= o.Y);
+        }
+
+        
+        public abstract void Move();
+
 
 
     }
