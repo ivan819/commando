@@ -16,6 +16,7 @@ namespace commando
         Scene scene;
         Timer Clock;
         Player player;
+        
         //  MovingObject enemy;
         // MovingObject bullet;
         const int Interval = 1000 / 60;
@@ -26,26 +27,23 @@ namespace commando
 
         private bool space = false;
 
+        Random rand = new Random();
+
         public MainGame()
         {
             InitializeComponent();
-            Initialize_Timer();
-          
 
-            // double buffer za da nema flicker
+
+            //double buffer za da nema flicker
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty |
                BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
-            this.Size = new System.Drawing.Size(Utils.FORM_WIDTH, Utils.FORM_HEIGHT);
 
 
             player = new Player();
             scene = new Scene(player);
-            //scene.AddObj(player);
-            // enemy = new MovingObject(50, 50);
 
-
-            //  scene.AddObj(enemy);
-            Initialize_Shoot_Timer();
+            health.Text = player.Health.ToString();
+            Initialize_Timer();
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -61,46 +59,45 @@ namespace commando
             Clock.Interval = Interval;
             Clock.Tick += new System.EventHandler(this.ClockTick);
             Clock.Start();
-        }
-        void Initialize_Shoot_Timer()
-        {
+
             Clock = new Timer();
             Clock.Interval = player.ShootRate;
             Clock.Tick += new System.EventHandler(this.ClockTickShoot);
             Clock.Start();
+
+            Clock = new Timer();
+            Clock.Interval = 2000;
+            Clock.Tick += new System.EventHandler(this.ClockTickEnemySpawn);
+            Clock.Start();
+        }
+
+        void ClockTickEnemySpawn(object sender, EventArgs e)
+        {
+            scene.Add(new Enemy(Utils.normal));
         }
         void ClockTickShoot(object sender, EventArgs e)
         {
-            player.CanShoot=true;
+            player.CanShoot = true;
         }
 
 
         void ClockTick(object sender, EventArgs e)
         {
-            if (w) { player.Y -= player.SpeedY; }
-            if (s) { player.Y += player.SpeedY; }
-            if (d) { player.X += player.SpeedX; }
-            if (a) { player.X -= player.SpeedX; }
+            if (w) { player.Y -= (int)player.SpeedY; }
+            if (s) { player.Y += (int)player.SpeedY; }
+            if (d) { player.X += (int)player.SpeedX; }
+            if (a) { player.X -= (int)player.SpeedX; }
             if (space && player.CanShoot)
             {
 
-                Bullet bullet = new Bullet(player.X, player.Y);
+                Bullet bullet = new Bullet(player.X + player.Width / 2, player.Y - 10, player.Damage);
                 player.CanShoot = false;
-                scene.AddObj(bullet);
+                scene.Add(bullet);
             }
-            //enemy.Y += 1;
-
-
-
-            // if (enemy.isCollidingWith(player))
-            {
-                //   scene.RemoveObject(enemy);
-            }
-
-
 
             Invalidate(true);
-
+            health.Text = player.Health.ToString();
+            health.Update();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

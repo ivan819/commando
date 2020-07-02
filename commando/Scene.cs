@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,40 +11,67 @@ namespace commando
 {
     public class Scene
     {
-        public List<MovingObject> movingObjects;
+        public List<Enemy> enemies;
+        public List<Bullet> bullets;
+
+        Random rand = new Random();
         public Player player { get; set; }
-        public int NumObjects { get { return movingObjects.Count; } }
 
         public Scene(Player player)
         {
-            movingObjects = new List<MovingObject>();
+            enemies = new List<Enemy>();
+            bullets = new List<Bullet>();
             this.player = player;
         }
-        public void AddObj(MovingObject f)
+        public void Add(Enemy f)
         {
-            movingObjects.Add(f);
+            enemies.Add(f);
         }
-        public void RemoveObject(MovingObject f)
+        public void Add(Bullet f)
         {
-            movingObjects.Remove(f);
+            bullets.Add(f);
+        }
+        public void Remove(Enemy f)
+        {
+            enemies.Remove(f);
+        }
+        public void Remove(Bullet f)
+        {
+            bullets.Remove(f);
         }
         public void DrawAll(Graphics g)
         {
-            Utils.CheckOutOfBounds(player); 
+            Utils.CheckOutOfBounds(player);
             player.Draw(g);
-            foreach (MovingObject movingObj in movingObjects)
+
+            foreach (Enemy enemy in enemies)
             {
-                movingObj.Move();
-                movingObj.Draw(g);
-                if (movingObj is Bullet){
-                    Utils.CheckOutOfBounds((Bullet) movingObj);
-                }
-               
+                enemy.Move();
+                enemy.Shoot(this, rand);
+                enemy.Draw(g);
             }
-            
-           
-                
-                
+
+            foreach (Bullet bullet in bullets)
+            {
+                if (player.IsCollidingWith(bullet))
+                {
+                    player.Health -= bullet.Damage;
+                    Utils.MarkForDelition(bullet);
+                }
+                bullet.Move();
+                Utils.CheckOutOfBounds(bullet);
+                foreach (Enemy enemy in enemies)
+                {
+                    if (bullet.IsCollidingWith(enemy))
+                    {
+                        Utils.MarkForDelition(bullet);
+                        enemy.Health -= bullet.Damage;
+                        if (enemy.Health <= 0) { Utils.MarkForDelition(enemy); }
+                    }
+                }
+                bullet.Draw(g);
+            }
+            Utils.DeleteMarkedObjects(this);
         }
     }
 }

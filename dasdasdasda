@@ -1,0 +1,496 @@
+[1mdiff --git a/commando/Drawable.cs b/commando/Drawable.cs[m
+[1mdeleted file mode 100644[m
+[1mindex 18222d8..0000000[m
+[1m--- a/commando/Drawable.cs[m
+[1m+++ /dev/null[m
+[36m@@ -1,14 +0,0 @@[m
+[31m-﻿using System;[m
+[31m-using System.Collections.Generic;[m
+[31m-using System.Drawing;[m
+[31m-using System.Linq;[m
+[31m-using System.Text;[m
+[31m-using System.Threading.Tasks;[m
+[31m-[m
+[31m-namespace commando[m
+[31m-{[m
+[31m-    public interface Drawable[m
+[31m-    {[m
+[31m-        void Draw(Graphics g);[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/commando/MainGame.cs b/commando/MainGame.cs[m
+[1mindex 177344c..c397142 100644[m
+[1m--- a/commando/MainGame.cs[m
+[1m+++ b/commando/MainGame.cs[m
+[36m@@ -15,34 +15,44 @@[m [mnamespace commando[m
+     {[m
+         Scene scene;[m
+         Timer Clock;[m
+[31m-        MovingObject player;[m
+[31m-[m
+[31m-        const int Interval = 1000/60;[m
+[31m-        bool w = false;[m
+[31m-        bool a = false;[m
+[31m-        bool s = false;[m
+[31m-        bool d = false;[m
+[31m-       // Graphics g;[m
+[32m+[m[32m        Player player;[m
+[32m+[m[32m        //  MovingObject enemy;[m
+[32m+[m[32m        // MovingObject bullet;[m
+[32m+[m[32m        const int Interval = 1000 / 60;[m
+[32m+[m[32m        private bool w = false;[m
+[32m+[m[32m        private bool a = false;[m
+[32m+[m[32m        private bool s = false;[m
+[32m+[m[32m        private bool d = false;[m
+[32m+[m
+[32m+[m[32m        private bool space = false;[m
+[32m+[m
+         public MainGame()[m
+         {[m
+             InitializeComponent();[m
+             Initialize_Timer();[m
+[32m+[m[41m          [m
+ [m
+[31m-            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | [m
+[32m+[m[32m            // double buffer za da nema flicker[m
+[32m+[m[32m            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty |[m
+                BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });[m
+[31m-            //this.DoubleBuffered = true;[m
+[31m-            //g = panel1.CreateGraphics();[m
+[31m-            scene = new Scene();[m
+[31m-            player = new MovingObject(50, 50);[m
+[31m-            scene.AddObj(player);[m
+[32m+[m[32m            this.Size = new System.Drawing.Size(Utils.FORM_WIDTH, Utils.FORM_HEIGHT);[m
+[32m+[m
+[32m+[m
+[32m+[m[32m            player = new Player();[m
+[32m+[m[32m            scene = new Scene(player);[m
+[32m+[m[32m            //scene.AddObj(player);[m
+[32m+[m[32m            // enemy = new MovingObject(50, 50);[m
+[32m+[m
+ [m
+[32m+[m[32m            //  scene.AddObj(enemy);[m
+[32m+[m[32m            Initialize_Shoot_Timer();[m
+         }[m
+ [m
+         private void panel1_Paint(object sender, PaintEventArgs e)[m
+         {[m
+[31m-           [m
+[32m+[m
+             scene.DrawAll(e.Graphics);[m
+[31m-           // g.Dispose();[m
+[32m+[m
+         }[m
+ [m
+         void Initialize_Timer()[m
+[36m@@ -52,16 +62,41 @@[m [mnamespace commando[m
+             Clock.Tick += new System.EventHandler(this.ClockTick);[m
+             Clock.Start();[m
+         }[m
+[32m+[m[32m        void Initialize_Shoot_Timer()[m
+[32m+[m[32m        {[m
+[32m+[m[32m            Clock = new Timer();[m
+[32m+[m[32m            Clock.Interval = player.ShootRate;[m
+[32m+[m[32m            Clock.Tick += new System.EventHandler(this.ClockTickShoot);[m
+[32m+[m[32m            Clock.Start();[m
+[32m+[m[32m        }[m
+[32m+[m[32m        void ClockTickShoot(object sender, EventArgs e)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            player.CanShoot=true;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m
+         void ClockTick(object sender, EventArgs e)[m
+         {[m
+[31m-            if (w) { player.SpeedY -= 5; }[m
+[31m-            if (s) { player.SpeedY += 5; }[m
+[31m-            if (d) { player.SpeedX += 5; }[m
+[31m-            if (a) { player.SpeedX -= 5; }[m
+[32m+[m[32m            if (w) { player.Y -= player.SpeedY; }[m
+[32m+[m[32m            if (s) { player.Y += player.SpeedY; }[m
+[32m+[m[32m            if (d) { player.X += player.SpeedX; }[m
+[32m+[m[32m            if (a) { player.X -= player.SpeedX; }[m
+[32m+[m[32m            if (space && player.CanShoot)[m
+[32m+[m[32m            {[m
+ [m
+[32m+[m[32m                Bullet bullet = new Bullet(player.X, player.Y);[m
+[32m+[m[32m                player.CanShoot = false;[m
+[32m+[m[32m                scene.AddObj(bullet);[m
+[32m+[m[32m            }[m
+[32m+[m[32m            //enemy.Y += 1;[m
+ [m
+ [m
+ [m
+[32m+[m[32m            // if (enemy.isCollidingWith(player))[m
+[32m+[m[32m            {[m
+[32m+[m[32m                //   scene.RemoveObject(enemy);[m
+[32m+[m[32m            }[m
+[32m+[m
+ [m
+ [m
+             Invalidate(true);[m
+[36m@@ -79,6 +114,11 @@[m [mnamespace commando[m
+                 s = true;[m
+             if (e.KeyCode == Keys.D)[m
+                 d = true;[m
+[32m+[m[32m            if (e.KeyCode == Keys.Space)[m
+[32m+[m[32m                space = true;[m
+[32m+[m
+[32m+[m
+[32m+[m
+         }[m
+ [m
+         protected override void OnKeyUp(KeyEventArgs e)[m
+[36m@@ -92,6 +132,11 @@[m [mnamespace commando[m
+                 s = false;[m
+             if (e.KeyCode == Keys.D)[m
+                 d = false;[m
+[32m+[m[32m            if (e.KeyCode == Keys.Space)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                space = false;[m
+[32m+[m
+[32m+[m[32m            }[m
+         }[m
+ [m
+ [m
+[1mdiff --git a/commando/MovingObject.cs b/commando/MovingObject.cs[m
+[1mindex 140517f..d6eb5fd 100644[m
+[1m--- a/commando/MovingObject.cs[m
+[1m+++ b/commando/MovingObject.cs[m
+[36m@@ -7,35 +7,44 @@[m [musing System.Threading.Tasks;[m
+ [m
+ namespace commando[m
+ {[m
+[31m-    class MovingObject : Drawable[m
+[32m+[m[32m    public abstract class MovingObject[m
+     {[m
+[31m-        Image img;[m
+[32m+[m[32m        public Image img { get; set; }[m
+         public int X { get; set; }[m
+         public int Y { get; set; }[m
+[31m-[m
+[32m+[m[32m        public int Width { get; set; }[m
+[32m+[m[32m        public int Height { get; set; }[m
+         public int SpeedX { get; set; }[m
+[31m-[m
+         public int SpeedY { get; set; }[m
+[32m+[m[32m        public int Health { get; set; }[m
+ [m
+[31m-        public MovingObject(int x, int y)[m
+[32m+[m[32m        public MovingObject(int x, int y, int SpeedX, int SpeedY, int Width, int Height, string type, int Health)[m
+         {[m
+             this.X = x;[m
+             this.Y = y;[m
+[31m-            this.SpeedX = 0;[m
+[31m-            this.SpeedY = 5;[m
+[31m-            img = Image.FromFile(@"C:\Users\Duck\Desktop\vp\player.jpg");[m
+[31m-[m
+[32m+[m[32m            this.SpeedX = SpeedX;[m
+[32m+[m[32m            this.SpeedY = SpeedY;[m
+[32m+[m[32m            this.Width = Width;[m
+[32m+[m[32m            this.Height = Height;[m
+[32m+[m[32m            this.Health = Health;[m
+[32m+[m[32m            img = Utils.getImg(type);[m
+         }[m
+         public void Draw(Graphics g)[m
+         {[m
+[32m+[m[32m            g.DrawImage(img, X, Y, Width, Height);[m
+[32m+[m[32m        }[m
+[32m+[m[41m       [m
+ [m
+[31m-            SolidBrush br = new SolidBrush(Color.Black);[m
+[31m-            //g.FillEllipse(br, X + SpeedX - 5, Y + SpeedY - 5, 20, 20);[m
+[31m-            [m
+[31m-            g.DrawImage(img, X + SpeedX - 5, Y + SpeedY - 5, 30, 30);[m
+[31m-            br.Dispose();[m
+[32m+[m[32m        public bool IsCollidingWith(MovingObject o)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return (this.X <= o.X + o.Width && this.X + this.Width >= o.X) &&[m
+[32m+[m[32m                    (this.Y <= o.Y + o.Height && this.Y + this.Height >= o.Y);[m
+         }[m
+ [m
+[32m+[m[41m        [m
+[32m+[m[32m        public abstract void Move();[m
+[32m+[m
+[32m+[m
+ [m
+     }[m
+ }[m
+[1mdiff --git a/commando/Properties/Resources.Designer.cs b/commando/Properties/Resources.Designer.cs[m
+[1mindex 5dd0b3c..430faf4 100644[m
+[1m--- a/commando/Properties/Resources.Designer.cs[m
+[1m+++ b/commando/Properties/Resources.Designer.cs[m
+[36m@@ -8,10 +8,10 @@[m
+ // </auto-generated>[m
+ //------------------------------------------------------------------------------[m
+ [m
+[31m-namespace commando.Properties[m
+[31m-{[m
+[31m-[m
+[31m-[m
+[32m+[m[32mnamespace commando.Properties {[m
+[32m+[m[32m    using System;[m
+[32m+[m[41m    [m
+[32m+[m[41m    [m
+     /// <summary>[m
+     ///   A strongly-typed resource class, for looking up localized strings, etc.[m
+     /// </summary>[m
+[36m@@ -19,53 +19,65 @@[m [mnamespace commando.Properties[m
+     // class via a tool like ResGen or Visual Studio.[m
+     // To add or remove a member, edit your .ResX file then rerun ResGen[m
+     // with the /str option, or rebuild your VS project.[m
+[31m-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")][m
+[32m+[m[32m    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")][m
+     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()][m
+     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()][m
+[31m-    internal class Resources[m
+[31m-    {[m
+[31m-[m
+[32m+[m[32m    internal class Resources {[m
+[32m+[m[41m        [m
+         private static global::System.Resources.ResourceManager resourceMan;[m
+[31m-[m
+[32m+[m[41m        [m
+         private static global::System.Globalization.CultureInfo resourceCulture;[m
+[31m-[m
+[32m+[m[41m        [m
+         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")][m
+[31m-        internal Resources()[m
+[31m-        {[m
+[32m+[m[32m        internal Resources() {[m
+         }[m
+[31m-[m
+[32m+[m[41m        [m
+         /// <summary>[m
+         ///   Returns the cached ResourceManager instance used by this class.[m
+         /// </summary>[m
+         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)][m
+[31m-        internal static global::System.Resources.ResourceManager ResourceManager[m
+[31m-        {[m
+[31m-            get[m
+[31m-            {[m
+[31m-                if ((resourceMan == null))[m
+[31m-                {[m
+[32m+[m[32m        internal static global::System.Resources.ResourceManager ResourceManager {[m
+[32m+[m[32m            get {[m
+[32m+[m[32m                if (object.ReferenceEquals(resourceMan, null)) {[m
+                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("commando.Properties.Resources", typeof(Resources).Assembly);[m
+                     resourceMan = temp;[m
+                 }[m
+                 return resourceMan;[m
+             }[m
+         }[m
+[31m-[m
+[32m+[m[41m        [m
+         /// <summary>[m
+         ///   Overrides the current thread's CurrentUICulture property for all[m
+         ///   resource lookups using this strongly typed resource class.[m
+         /// </summary>[m
+         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)][m
+[31m-        internal static global::System.Globalization.CultureInfo Culture[m
+[31m-        {[m
+[31m-            get[m
+[31m-            {[m
+[32m+[m[32m        internal static global::System.Globalization.CultureInfo Culture {[m
+[32m+[m[32m            get {[m
+                 return resourceCulture;[m
+             }[m
+[31m-            set[m
+[31m-            {[m
+[32m+[m[32m            set {[m
+                 resourceCulture = value;[m
+             }[m
+         }[m
+[32m+[m[41m        [m
+[32m+[m[32m        /// <summary>[m
+[32m+[m[32m        ///   Looks up a localized resource of type System.Drawing.Bitmap.[m
+[32m+[m[32m        /// </summary>[m
+[32m+[m[32m        internal static System.Drawing.Bitmap player {[m
+[32m+[m[32m            get {[m
+[32m+[m[32m                object obj = ResourceManager.GetObject("player", resourceCulture);[m
+[32m+[m[32m                return ((System.Drawing.Bitmap)(obj));[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[41m        [m
+[32m+[m[32m        /// <summary>[m
+[32m+[m[32m        ///   Looks up a localized resource of type System.Drawing.Bitmap.[m
+[32m+[m[32m        /// </summary>[m
+[32m+[m[32m        internal static System.Drawing.Bitmap ship {[m
+[32m+[m[32m            get {[m
+[32m+[m[32m                object obj = ResourceManager.GetObject("ship", resourceCulture);[m
+[32m+[m[32m                return ((System.Drawing.Bitmap)(obj));[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+     }[m
+ }[m
+[1mdiff --git a/commando/Properties/Resources.resx b/commando/Properties/Resources.resx[m
+[1mindex af7dbeb..a34348b 100644[m
+[1m--- a/commando/Properties/Resources.resx[m
+[1m+++ b/commando/Properties/Resources.resx[m
+[36m@@ -46,7 +46,7 @@[m
+     [m
+     mimetype: application/x-microsoft.net.object.binary.base64[m
+     value   : The object must be serialized with [m
+[31m-            : System.Serialization.Formatters.Binary.BinaryFormatter[m
+[32m+[m[32m            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter[m
+             : and then encoded with base64 encoding.[m
+     [m
+     mimetype: application/x-microsoft.net.object.soap.base64[m
+[36m@@ -60,6 +60,7 @@[m
+             : and then encoded with base64 encoding.[m
+     -->[m
+   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">[m
+[32m+[m[32m    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />[m
+     <xsd:element name="root" msdata:IsDataSet="true">[m
+       <xsd:complexType>[m
+         <xsd:choice maxOccurs="unbounded">[m
+[36m@@ -68,9 +69,10 @@[m
+               <xsd:sequence>[m
+                 <xsd:element name="value" type="xsd:string" minOccurs="0" />[m
+               </xsd:sequence>[m
+[31m-              <xsd:attribute name="name" type="xsd:string" />[m
+[32m+[m[32m              <xsd:attribute name="name" use="required" type="xsd:string" />[m
+               <xsd:attribute name="type" type="xsd:string" />[m
+               <xsd:attribute name="mimetype" type="xsd:string" />[m
+[32m+[m[32m              <xsd:attribute ref="xml:space" />[m
+             </xsd:complexType>[m
+           </xsd:element>[m
+           <xsd:element name="assembly">[m
+[36m@@ -85,9 +87,10 @@[m
+                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />[m
+                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />[m
+               </xsd:sequence>[m
+[31m-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />[m
+[32m+[m[32m              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />[m
+               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />[m
+               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />[m
+[32m+[m[32m              <xsd:attribute ref="xml:space" />[m
+             </xsd:complexType>[m
+           </xsd:element>[m
+           <xsd:element name="resheader">[m
+[36m@@ -109,9 +112,16 @@[m
+     <value>2.0</value>[m
+   </resheader>[m
+   <resheader name="reader">[m
+[31m-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>[m
+[32m+[m[32m    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>[m
+   </resheader>[m
+   <resheader name="writer">[m
+[31m-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>[m
+[32m+[m[32m    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>[m
+   </resheader>[m
+[32m+[m[32m  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />[m
+[32m+[m[32m  <data name="player" type="System.Resources.ResXFileRef, System.Windows.Forms">[m
+[32m+[m[32m    <value>..\Resources\player.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>[m
+[32m+[m[32m  </data>[m
+[32m+[m[32m  <data name="ship" type="System.Resources.ResXFileRef, System.Windows.Forms">[m
+[32m+[m[32m    <value>..\Resources\ship.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>[m
+[32m+[m[32m  </data>[m
+ </root>[m
+\ No newline at end of file[m
+[1mdiff --git a/commando/Scene.cs b/commando/Scene.cs[m
+[1mindex 5c22836..66fc89d 100644[m
+[1m--- a/commando/Scene.cs[m
+[1m+++ b/commando/Scene.cs[m
+[36m@@ -2,6 +2,7 @@[m
+ using System.Collections.Generic;[m
+ using System.Drawing;[m
+ using System.Linq;[m
+[32m+[m[32musing System.Security.Cryptography;[m
+ using System.Text;[m
+ using System.Threading.Tasks;[m
+ [m
+[36m@@ -9,21 +10,40 @@[m [mnamespace commando[m
+ {[m
+     public class Scene[m
+     {[m
+[31m-        public List<Drawable> drwObj;[m
+[31m-        public int NumObjects { get { return drwObj.Count; } }[m
+[32m+[m[32m        public List<MovingObject> movingObjects;[m
+[32m+[m[32m        public Player player { get; set; }[m
+[32m+[m[32m        public int NumObjects { get { return movingObjects.Count; } }[m
+ [m
+[31m-        public Scene()[m
+[32m+[m[32m        public Scene(Player player)[m
+         {[m
+[31m-            drwObj = new List<Drawable>();[m
+[32m+[m[32m            movingObjects = new List<MovingObject>();[m
+[32m+[m[32m            this.player = player;[m
+         }[m
+[31m-        public void AddObj(Drawable f)[m
+[32m+[m[32m        public void AddObj(MovingObject f)[m
+         {[m
+[31m-            drwObj.Add(f);[m
+[32m+[m[32m            movingObjects.Add(f);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        public void RemoveObject(MovingObject f)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            movingObjects.Remove(f);[m
+         }[m
+         public void DrawAll(Graphics g)[m
+         {[m
+[31m-            foreach (Drawable frm in drwObj)[m
+[31m-                frm.Draw(g);[m
+[32m+[m[32m            Utils.CheckOutOfBounds(player);[m[41m [m
+[32m+[m[32m            player.Draw(g);[m
+[32m+[m[32m            foreach (MovingObject movingObj in movingObjects)[m
+[32m+[m[32m            {[m
+[32m+[m[32m                movingObj.Move();[m
+[32m+[m[32m                movingObj.Draw(g);[m
+[32m+[m[32m                if (movingObj is Bullet){[m
+[32m+[m[32m                    Utils.CheckOutOfBounds((Bullet) movingObj);[m
+[32m+[m[32m                }[m
+[32m+[m[41m               [m
+[32m+[m[32m            }[m
+[32m+[m[41m            [m
+[32m+[m[41m           [m
+[32m+[m[41m                [m
+[32m+[m[41m                [m
+         }[m
+     }[m
+ }[m
+[1mdiff --git a/commando/commando.csproj b/commando/commando.csproj[m
+[1mindex d43fe52..0579a7f 100644[m
+[1m--- a/commando/commando.csproj[m
+[1m+++ b/commando/commando.csproj[m
+[36m@@ -46,7 +46,7 @@[m
+     <Reference Include="System.Xml" />[m
+   </ItemGroup>[m
+   <ItemGroup>[m
+[31m-    <Compile Include="Drawable.cs" />[m
+[32m+[m[32m    <Compile Include="Bullet.cs" />[m
+     <Compile Include="MainGame.cs">[m
+       <SubType>Form</SubType>[m
+     </Compile>[m
+[36m@@ -54,9 +54,11 @@[m
+       <DependentUpon>MainGame.cs</DependentUpon>[m
+     </Compile>[m
+     <Compile Include="MovingObject.cs" />[m
+[32m+[m[32m    <Compile Include="Player.cs" />[m
+     <Compile Include="Program.cs" />[m
+     <Compile Include="Properties\AssemblyInfo.cs" />[m
+     <Compile Include="Scene.cs" />[m
+[32m+[m[32m    <Compile Include="Utils.cs" />[m
+     <EmbeddedResource Include="MainGame.resx">[m
+       <DependentUpon>MainGame.cs</DependentUpon>[m
+     </EmbeddedResource>[m
+[36m@@ -68,6 +70,7 @@[m
+     <Compile Include="Properties\Resources.Designer.cs">[m
+       <AutoGen>True</AutoGen>[m
+       <DependentUpon>Resources.resx</DependentUpon>[m
+[32m+[m[32m      <DesignTime>True</DesignTime>[m
+     </Compile>[m
+     <None Include="Properties\Settings.settings">[m
+       <Generator>SettingsSingleFileGenerator</Generator>[m
+[36m@@ -82,5 +85,10 @@[m
+   <ItemGroup>[m
+     <None Include="App.config" />[m
+   </ItemGroup>[m
+[32m+[m[32m  <ItemGroup>[m
+[32m+[m[32m    <Content Include="Bitmap1.bmp" />[m
+[32m+[m[32m    <None Include="Resources\ship.png" />[m
+[32m+[m[32m    <None Include="Resources\player.jpg" />[m
+[32m+[m[32m  </ItemGroup>[m
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />[m
+ </Project>[m
+\ No newline at end of file[m

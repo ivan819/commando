@@ -14,11 +14,11 @@ namespace commando
         public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public int SpeedX { get; set; }
-        public int SpeedY { get; set; }
+        public double SpeedX { get; set; }
+        public double SpeedY { get; set; }
         public int Health { get; set; }
 
-        public MovingObject(int x, int y, int SpeedX, int SpeedY, int Width, int Height, string type, int Health)
+        public MovingObject(int x, int y, double SpeedX, double SpeedY, int Width, int Height, string type, int Health)
         {
             this.X = x;
             this.Y = y;
@@ -33,7 +33,7 @@ namespace commando
         {
             g.DrawImage(img, X, Y, Width, Height);
         }
-       
+
 
         public bool IsCollidingWith(MovingObject o)
         {
@@ -41,7 +41,7 @@ namespace commando
                     (this.Y <= o.Y + o.Height && this.Y + this.Height >= o.Y);
         }
 
-        
+
         public abstract void Move();
 
 
