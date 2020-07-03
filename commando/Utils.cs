@@ -17,17 +17,29 @@ namespace commando
         public static int FORM_HEIGHT = 700;
         public static List<MovingObject> MarkedForDeletion;
 
-        public static EnemyType normal = new EnemyType(0, 1, 30, 30, 50, 60, "player", 20);
-        public static EnemyType mine = new EnemyType(0, 3, 20, 20, 0, 20, "player", 150);
+        public static EnemyType normal = new EnemyType(0, 1, 30, 30, 30, 120, "normal", 10,50);
+        public static EnemyType homing = new EnemyType(0, 2, 35, 35, 50, 60, "homing", 15,100);
+        public static EnemyType mine = new EnemyType(0, 0, 30, 30, 20, 0, "mine", 170,25);
 
         static Utils()
         {
             map = new Dictionary<string, Image>();
             MarkedForDeletion = new List<MovingObject>();
             map.Add("player", commando.Properties.Resources.ship_new);
-            map.Add("bullet", commando.Properties.Resources.ship);
+            map.Add("bullet", commando.Properties.Resources.bullet);
             map.Add("enemy", commando.Properties.Resources.ship);
+            map.Add("mine", commando.Properties.Resources.mine);
+            map.Add("normal", commando.Properties.Resources.ship_reverse1);
+            map.Add("homing", commando.Properties.Resources.ship_reverse);
 
+            map.Add("1", commando.Properties.Resources.freeze);
+            map.Add("2", commando.Properties.Resources.heal);
+            map.Add("3", commando.Properties.Resources.invincibility);
+            map.Add("4", commando.Properties.Resources.multishot);
+            map.Add("5", commando.Properties.Resources.instakill);
+            map.Add("6", commando.Properties.Resources.stats);
+
+          
 
         }
         public static Image getImg(string type)
@@ -79,6 +91,10 @@ namespace commando
                 {
                     scene.Remove((Bullet)mo);
                 }
+                else if (mo is PowerUp)
+                {
+                    scene.Remove((PowerUp)mo);
+                }
 
             }
             MarkedForDeletion.Clear();
@@ -98,8 +114,9 @@ namespace commando
         public int schance { get; set; }
         public string image { get; set; }
 
+        public int score { get; set; }
         public int dmg { get; set; }
-        public EnemyType(int sx, int sy, int w, int h, int hp, int schance, string image, int dmg)
+        public EnemyType(int sx, int sy, int w, int h, int hp, int schance, string image, int dmg, int score)
         {
             this.sx = sx;
             this.sy = sy;
@@ -109,6 +126,7 @@ namespace commando
             this.schance = schance;
             this.image = image;
             this.dmg = dmg;
+            this.score = score;
         }
     }
 }

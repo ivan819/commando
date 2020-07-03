@@ -52,12 +52,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 719);
+            this.ClientSize = new System.Drawing.Size(600, 700);
             this.Controls.Add(this.health);
             this.Controls.Add(this.panel1);
             this.Name = "MainGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainGame_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

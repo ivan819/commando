@@ -16,7 +16,7 @@ namespace commando
         Scene scene;
         Timer Clock;
         Player player;
-        
+
         //  MovingObject enemy;
         // MovingObject bullet;
         const int Interval = 1000 / 60;
@@ -66,18 +66,47 @@ namespace commando
             Clock.Start();
 
             Clock = new Timer();
-            Clock.Interval = 2000;
+            Clock.Interval = 3000;
             Clock.Tick += new System.EventHandler(this.ClockTickEnemySpawn);
+            Clock.Start();
+
+            Clock = new Timer();
+            Clock.Interval = 5000;
+            Clock.Tick += new System.EventHandler(this.ClockTickPowerupSpawn);
             Clock.Start();
         }
 
         void ClockTickEnemySpawn(object sender, EventArgs e)
         {
-            scene.Add(new Enemy(Utils.normal));
+            EnemyType enemy;
+            int x = rand.Next(0, 10);
+            if (x == 0)
+            {
+                enemy = Utils.mine;
+            }
+            else if (x <= 4)
+            {
+                enemy = Utils.homing;
+            }
+            else
+            {
+                enemy = Utils.normal;
+            }
+
+            scene.Add(new Enemy(enemy));
         }
         void ClockTickShoot(object sender, EventArgs e)
         {
             player.CanShoot = true;
+        }
+
+        void ClockTickPowerupSpawn(object sender, EventArgs e)
+        {
+            if (scene.powerups.Count <= 2)
+            {
+                scene.Add(new PowerUp(rand.Next(6, 7).ToString()));
+            }
+            
         }
 
 
@@ -89,8 +118,29 @@ namespace commando
             if (a) { player.X -= (int)player.SpeedX; }
             if (space && player.CanShoot)
             {
+                int bulletDmg = player.Damage;
+                if (player.Instakill)
+                {
+                    bulletDmg = 10000;
+                }
+                if (player.Multishot)
+                {
+                    Bullet bullet1;
+                    double Angle45 = Math.Atan2(-400, 100);
+                    double Angle452 = Math.Atan2(-400, -100);
+                    double Angle90 = Math.Atan2(-300, 100);
+                    double Angle902 = Math.Atan2(-300, -100);
 
-                Bullet bullet = new Bullet(player.X + player.Width / 2, player.Y - 10, player.Damage);
+                    bullet1 = new Bullet(player.X + player.Width / 2, player.Y - 12, 10 * Math.Cos(Angle45), 7 * Math.Sin(Angle45), bulletDmg);
+                    scene.Add(bullet1);
+                    bullet1 = new Bullet(player.X + player.Width / 2, player.Y - 12, 10 * Math.Cos(Angle452), 7 * Math.Sin(Angle452), bulletDmg);
+                    scene.Add(bullet1);
+                    bullet1 = new Bullet(player.X + player.Width / 2, player.Y - 10, 10 * Math.Cos(Angle90), 7 * Math.Sin(Angle90), bulletDmg);
+                    scene.Add(bullet1);
+                    bullet1 = new Bullet(player.X + player.Width / 2, player.Y - 10, 10 * Math.Cos(Angle902), 7 * Math.Sin(Angle902), bulletDmg);
+                    scene.Add(bullet1);
+                }
+                Bullet bullet = new Bullet(player.X + player.Width / 2, player.Y - 10, 0, -7, bulletDmg);
                 player.CanShoot = false;
                 scene.Add(bullet);
             }
@@ -136,6 +186,9 @@ namespace commando
             }
         }
 
+        private void MainGame_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

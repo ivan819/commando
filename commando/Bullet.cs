@@ -17,7 +17,7 @@ namespace commando
         }
 
 
-        public Bullet(int x, int y, int damage) : base(x, y, 0, -5, 5, 5, "bullet", 1)
+        public Bullet(int x, int y, int damage) : base(x, y, 0, -7, 7, 7, "bullet", 1)
         {
             this.Damage = damage;
         }

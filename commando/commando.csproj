@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="MovingObject.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PowerUp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
@@ -88,6 +89,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bitmap1.bmp" />
+    <None Include="Resources\heal.png" />
+    <None Include="Resources\invincibility.png" />
+    <None Include="Resources\instakill.png" />
+    <None Include="Resources\multishot.png" />
+    <None Include="Resources\stats.png" />
+    <None Include="Resources\freeze.png" />
+    <None Include="Resources\ship_new11.png" />
+    <None Include="Resources\ship_new1.png" />
+    <None Include="Resources\mine.png" />
+    <None Include="Resources\bullet.png" />
     <None Include="Resources\ship_new.png" />
     <None Include="Resources\ship.png" />
     <None Include="Resources\player.jpg" />

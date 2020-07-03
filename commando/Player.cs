@@ -14,6 +14,11 @@ namespace commando
 
         public int Damage { get; set; }
 
+        public int MaxHealth { get; set; }
+
+        public bool Instakill { get; set; }
+        public bool Invincible { get; set; }
+        public bool Multishot { get; set; }
         public override void Move()
         {
 
@@ -22,7 +27,15 @@ namespace commando
         {
             this.Damage = 30;
             this.ShootRate = 500;
-            this.CanShoot = true;
+            this.CanShoot = false;
+            this.Instakill = false;
+            this.Multishot = false;
+            this.MaxHealth = 200;
+        }
+        public void Kill()
+        {
+            this.SpeedX = 0;
+            this.SpeedY = 0;
         }
     }
 }
