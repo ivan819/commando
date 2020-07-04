@@ -16,9 +16,6 @@ namespace commando
             this.X = rand.Next(0, 600 - this.Width);
             this.Y = rand.Next(0, 700 - this.Height);
         }
-        public override void Move()
-        {
-
-        }
+       
     }
 }

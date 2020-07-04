@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Bullet.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Explosion.cs" />
     <Compile Include="MainGame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,7 +101,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bitmap1.bmp" />
+<<<<<<< Updated upstream
     <None Include="Resources\kaka.PNG" />
+=======
+    <None Include="Resources\explosion.png" />
+>>>>>>> Stashed changes
     <None Include="Resources\heal.png" />
     <None Include="Resources\invincibility.png" />
     <None Include="Resources\instakill.png" />
