@@ -25,7 +25,13 @@ namespace commando
         private void button1_Click(object sender, EventArgs e)
         {
             MainGame f2 = new MainGame();
+            this.Visible = false;
             f2.ShowDialog();
+        }
+
+        private void MenuMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

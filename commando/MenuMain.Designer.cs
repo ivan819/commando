@@ -33,10 +33,12 @@
             // 
             // button1
             // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(75, 437);
+            this.button1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.button1.Location = new System.Drawing.Point(56, 512);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(440, 61);
+            this.button1.Size = new System.Drawing.Size(613, 112);
             this.button1.TabIndex = 0;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -45,13 +47,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::commando.Properties.Resources.kaka;
+            this.BackgroundImage = global::commando.Properties.Resources.meni;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(592, 584);
+            this.ClientSize = new System.Drawing.Size(742, 705);
             this.Controls.Add(this.button1);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MenuMain";
             this.Text = "MenuMain";
+            this.Load += new System.EventHandler(this.MenuMain_Load);
             this.ResumeLayout(false);
 
         }

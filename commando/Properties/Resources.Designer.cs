@@ -113,9 +113,9 @@ namespace commando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kaka {
+        internal static System.Drawing.Bitmap meni {
             get {
-                object obj = ResourceManager.GetObject("kaka", resourceCulture);
+                object obj = ResourceManager.GetObject("meni", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
