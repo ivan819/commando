@@ -20,6 +20,7 @@ namespace commando
             button1.FlatAppearance.MouseOverBackColor = Color.Transparent;
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = BackColor;
+            button1.FlatAppearance.MouseOverBackColor = Color.Transparent;
         }
 
         private void button1_Click(object sender, EventArgs e)
