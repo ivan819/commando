@@ -30,7 +30,7 @@ namespace commando
         public Timer InvincibleTimer;
         public Timer MultishotTimer;
 
-        public Player() : base(300, 600, 5, 5, 50, 50, "player", 200)
+        public Player() : base(300, 600, 5, 5, 65, 65, "player", 200)
         {
             this.Damage = 30;
             this.ShootRate = 500;
@@ -66,11 +66,25 @@ namespace commando
         // Overloaded becouse of keypress'
         public void Move(bool w, bool a, bool s, bool d)
         {
+            this.img = Utils.getImg("player");
             // Movement
             if (w) { this.Y -= (int)this.SpeedY; }
             if (s) { this.Y += (int)this.SpeedY; }
-            if (d) { this.X += (int)this.SpeedX; }
-            if (a) { this.X -= (int)this.SpeedX; }
+            if (d)
+            { 
+                this.X += (int)this.SpeedX;
+                this.img = Utils.getImg("player-right");
+            }
+            if (a) 
+            {
+                this.X -= (int)this.SpeedX;
+                this.img = Utils.getImg("player-left");
+            }
+            if (a && d)
+            {
+               
+                this.img = Utils.getImg("player");
+            }
         }
 
         // Shooting

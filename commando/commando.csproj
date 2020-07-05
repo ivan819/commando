@@ -101,6 +101,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bitmap1.bmp" />
+    <None Include="Resources\veering1.png" />
+    <None Include="Resources\firing.png" />
+    <None Include="Resources\veering2.png" />
+    <None Include="Resources\veering.png" />
+    <None Include="Resources\plane_preview.png" />
+    <None Include="Resources\tilt2.png" />
+    <None Include="Resources\tilt1.png" />
     <None Include="Resources\kaka.PNG" />
     <None Include="Resources\explosion.png" />
     <None Include="Resources\heal.png" />

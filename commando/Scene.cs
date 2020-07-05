@@ -248,7 +248,7 @@ namespace commando
                 }
                 this.player.Damage += 7;
                 this.player.MaxHealth += 10;
-                this.player.Health += 15;
+                this.player.Health += 10;
                
                 
                 Message = "+STATS";
@@ -428,10 +428,13 @@ namespace commando
         void DifficulityTick(object sender, EventArgs e)
         {
             this.level++;
-            if (EnemySpawnTimer.Interval >= 400) ;
-            EnemySpawnTimer.Stop();
-            EnemySpawnTimer.Interval -= 300;
-            EnemySpawnTimer.Start();
+            if (EnemySpawnTimer.Interval >= 400)
+            {
+                EnemySpawnTimer.Stop();
+                EnemySpawnTimer.Interval -= 300;
+                EnemySpawnTimer.Start();
+            }
+            
         }
 
         

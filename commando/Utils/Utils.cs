@@ -25,13 +25,14 @@ namespace commando
         {
             map = new Dictionary<string, Image>();
            // MarkedForDeletion = new List<MovingObject>();
-            map.Add("player", commando.Properties.Resources.ship_new);
+            map.Add("player", commando.Properties.Resources.firing);
             map.Add("bullet", commando.Properties.Resources.bullet);
-            map.Add("enemy", commando.Properties.Resources.ship);
             map.Add("mine", commando.Properties.Resources.mine);
             map.Add("normal", commando.Properties.Resources.ship_reverse1);
             map.Add("homing", commando.Properties.Resources.ship_reverse);
             map.Add("explosion", commando.Properties.Resources.explosion);
+            map.Add("player-left", commando.Properties.Resources.veering2);
+            map.Add("player-right", commando.Properties.Resources.veering1);
 
             map.Add("1", commando.Properties.Resources.freeze);
             map.Add("2", commando.Properties.Resources.heal);

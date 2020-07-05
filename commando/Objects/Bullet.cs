@@ -11,9 +11,10 @@ namespace commando
     {
         public int Damage { get; set; }
         
-        public Bullet(int x, int y, double sx, double sy, int damage) : base(x, y, sx, sy, 5, 5, "bullet", 1)
+        public Bullet(int x, int y, double sx, double sy, int damage) : base(x, y, sx, sy, 7, 7, "bullet", 1)
         {
             this.Damage = damage;
         }
     }
 }
+ 
