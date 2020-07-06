@@ -72,14 +72,18 @@ MovingObject ги содржи функциите:
 -**void PowerUp(String power)** - Функција за контрола на појавување на PowerUps.
 
 # Screenshoots од изгледот на играта
-Gameplay :
+## Gameplay :
+
 ![alt text](https://raw.githubusercontent.com/ivan819/commando/master/gameplay.PNG)
 
-Главно мени :
+## Главно мени :
+
 ![alt text](https://raw.githubusercontent.com/ivan819/commando/master/glavnoMeni.PNG)
 
-HighScores :
+## HighScores :
+
 ![alt text](https://raw.githubusercontent.com/ivan819/commando/master/highscoreTable.PNG)
 
-Game Over форма :
+## Game Over форма :
+
 ![alt text](https://raw.githubusercontent.com/ivan819/commando/master/GameOverForm.PNG)
