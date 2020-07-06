@@ -23,6 +23,8 @@ namespace commando
         // Image for drawing
         public Image img { get; set; }
 
+        Random rand = new Random();
+
         public MovingObject(int x, int y, double SpeedX, double SpeedY, int Width, int Height, string type, int Health)
         {
             this.X = x;
@@ -48,6 +50,11 @@ namespace commando
         // Diffrent movement for different objects
         public void Move()
         {
+            if (rand.Next(1, 120) == 1)
+            {
+                this.SpeedX*=-1;
+            }
+
             this.Y += (int)this.SpeedY;
             this.X += (int)this.SpeedX;
         }

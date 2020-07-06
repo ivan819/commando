@@ -38,7 +38,7 @@ namespace commando
             if(type == Utils.mine)
             {
                 this.X = rand.Next(0, 600 - this.Width);
-                this.Y = rand.Next(0, 700 - this.Height);
+                this.Y = rand.Next(0, 600 - this.Height);
                 this.ShootChance = 0;
             }
 

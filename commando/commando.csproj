@@ -101,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bitmap1.bmp" />
+    <None Include="Resources\red.png" />
+    <None Include="Resources\blue.png" />
+    <None Include="Resources\background.png" />
     <None Include="Resources\veering1.png" />
     <None Include="Resources\firing.png" />
     <None Include="Resources\veering2.png" />

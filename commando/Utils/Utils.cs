@@ -17,8 +17,8 @@ namespace commando
         public static int FORM_HEIGHT = 700;
        
 
-        public static EnemyType normal = new EnemyType(0, 1, 30, 30, 30, 120, "normal", 10,50);
-        public static EnemyType homing = new EnemyType(0, 2, 35, 35, 50, 60, "homing", 15,100);
+        public static EnemyType normal = new EnemyType(1, 1, 50, 50, 30, 120, "normal", 10,50);
+        public static EnemyType homing = new EnemyType(0, 2, 50, 50, 50, 60, "homing", 15,100);
         public static EnemyType mine = new EnemyType(0, 0, 30, 30, 20, 0, "mine", 170,25);
 
         static Utils()
@@ -28,11 +28,12 @@ namespace commando
             map.Add("player", commando.Properties.Resources.firing);
             map.Add("bullet", commando.Properties.Resources.bullet);
             map.Add("mine", commando.Properties.Resources.mine);
-            map.Add("normal", commando.Properties.Resources.ship_reverse1);
-            map.Add("homing", commando.Properties.Resources.ship_reverse);
+            map.Add("normal", commando.Properties.Resources.blue);
+            map.Add("homing", commando.Properties.Resources.red);
             map.Add("explosion", commando.Properties.Resources.explosion);
             map.Add("player-left", commando.Properties.Resources.veering2);
             map.Add("player-right", commando.Properties.Resources.veering1);
+            map.Add("background", commando.Properties.Resources.background);
 
             map.Add("1", commando.Properties.Resources.freeze);
             map.Add("2", commando.Properties.Resources.heal);

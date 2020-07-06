@@ -11,7 +11,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace commando
 {
-   
+
     public class Scene
     {
         // Moving objects list
@@ -37,7 +37,8 @@ namespace commando
         public Timer PowerupSpawnTimer;
         public Timer Difficulity;
 
-
+        public Image BackgroundImage;
+        public int ImageOffset;
 
         public Random rand = new Random();
 
@@ -53,6 +54,9 @@ namespace commando
             this.Multiplier = 1;
             this.player = new Player();
             this.level = 1;
+
+            this.BackgroundImage = Utils.getImg("background");
+            this.ImageOffset = 0;
 
             this.PowerUpMessageTimer = new Timer();
             this.PowerUpMessageTimer.Interval = 3000;
@@ -78,12 +82,24 @@ namespace commando
         // entry point on every tick
         public void DoAllTheWork(bool w, bool a, bool s, bool d, bool space, Graphics g)
         {
+            DrawBackground(g);
             DrawMoveShootAllObjects(g);
             DrawUI(g);
             CheckOutOfBounds(player);
             player.Move(w, a, s, d);
             player.Shoot(space, this);
             player.Draw(g);
+        }
+
+        public void DrawBackground(Graphics g)
+        {
+            if (this.ImageOffset >= 700)
+            {
+                this.ImageOffset = 0;
+            }
+            g.DrawImage(BackgroundImage, 0, 0 + ImageOffset, 600, 700);
+            g.DrawImage(BackgroundImage, 0, -700 + ImageOffset, 600, 700);
+            this.ImageOffset += 1;
         }
 
         // Drawing the hud
@@ -156,7 +172,7 @@ namespace commando
             foreach (Explosion exp in explosions)
             {
                 exp.Draw(g);
-               
+
             }
 
             // Draw all enemies and check collisions with player
@@ -169,7 +185,7 @@ namespace commando
                 if (player.IsCollidingWith(enemy))
                 {
                     // Enemy dies instantly
-                    this.explosions.Add(new Explosion(enemy.X,enemy.Y,this));
+                    this.explosions.Add(new Explosion(enemy.X, enemy.Y, this));
                     MarkForDeletion(enemy);
                     // if not invincible take dmg and reset score multiplier
                     if (!player.Invincible)
@@ -239,7 +255,7 @@ namespace commando
             if (power.Equals("6"))
             {
                 // limit some of the stats
-                if(this.player.SpeedX >= 15)
+                if (this.player.SpeedX >= 15)
                 {
                     this.player.ShootRate -= 50;
                     this.player.SpeedX += 1;
@@ -249,11 +265,11 @@ namespace commando
                 this.player.Damage += 7;
                 this.player.MaxHealth += 10;
                 this.player.Health += 10;
-               
-                
+
+
                 Message = "+STATS";
                 this.player.ShootRateTimer.Stop();
-                this.player.ShootRateTimer.Interval=this.player.ShootRate;
+                this.player.ShootRateTimer.Interval = this.player.ShootRate;
                 this.player.ShootRateTimer.Start();
 
 
@@ -414,7 +430,7 @@ namespace commando
             {
                 enemy = Utils.normal;
             }
-            enemies.Add(new Enemy(enemy,level));
+            enemies.Add(new Enemy(enemy, level));
         }
 
         void ClockTickPowerupSpawn(object sender, EventArgs e)
@@ -434,9 +450,9 @@ namespace commando
                 EnemySpawnTimer.Interval -= 300;
                 EnemySpawnTimer.Start();
             }
-            
+
         }
 
-        
+
     }
 }
