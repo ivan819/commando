@@ -9,34 +9,36 @@ namespace commando
 {
     public class ScoreHolderClass
     {
-        private List<ScoreNamePair> scores;
+        private static List<ScoreNamePair> scores;
+        private static String filePath;
 
-        public ScoreHolderClass()
+        static ScoreHolderClass()
         {
-            this.scores = new List<ScoreNamePair>();
-            this.load();
+            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "highscores.txt");
+            scores = new List<ScoreNamePair>();
+            createTXT();
         }
 
-        public void add(string name, int score)
+        public static void add(string name, long score)
         {
 
 
-            this.scores.Add(new ScoreNamePair(name, score));
-
-            this.save();
+            scores.Add(new ScoreNamePair(name, score));
+            save();
         }
 
-        public List<ScoreNamePair> getScores()
+        public static List<ScoreNamePair> getScores()
         {
-            this.scores.Sort();
-            return this.scores;
+            load();
+            scores.Sort();
+            return scores;
         }
 
-        private void save()
+        private static void save()
         {
-            TextWriter tw = new StreamWriter(@"C:\Users\Gregor Mandikj\Desktop\baza");
+            TextWriter tw = new StreamWriter(filePath);
 
-            foreach (ScoreNamePair item in this.scores)
+            foreach (ScoreNamePair item in scores)
             {
                 tw.WriteLine(string.Format("{0}:{1}", item.name, item.score));
             }
@@ -45,23 +47,29 @@ namespace commando
             //System.IO.File.WriteAllLines(, this.scores);
         }
 
-        private void load()
+        private static void load()
         {
-            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\Gregor Mandikj\Desktop\baza");
+            scores = new List<ScoreNamePair>();
+            string[] lines = System.IO.File.ReadAllLines(filePath);
 
             foreach (string s in lines)
             {
                 if (!s.Equals(""))
                 {
-                    string[] parts = s.Split();
-                    this.scores.Add(new ScoreNamePair(parts[1], Int32.Parse(parts[0])));
+                    string[] parts = s.Split(':');
+                    scores.Add(new ScoreNamePair(parts[0], Int32.Parse(parts[1])));
                 }
 
             }
         }
 
-        private void createTXT()
+        private static void createTXT()
         {
+            if (!File.Exists(filePath))
+            {
+                FileStream fs = File.Create(filePath);
+                fs.Close();
+            }
 
         }
 

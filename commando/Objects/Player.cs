@@ -117,12 +117,6 @@ namespace commando
             }
         }
 
-        // Player death
-        public void Kill()
-        {
-            this.SpeedX = 0;
-            this.SpeedY = 0;
-        }
 
         // Shoot Tick
         private void ClockTickShoot(object sender, EventArgs e)

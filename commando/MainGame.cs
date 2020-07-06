@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,8 +14,8 @@ namespace commando
 {
     public partial class MainGame : Form
     {
-        Scene scene;
-        Timer Clock;
+        public Scene scene;
+        public System.Windows.Forms.Timer Clock;
         
 
         const int Interval = 1000 / 60;
@@ -27,9 +28,13 @@ namespace commando
 
         Random rand = new Random();
 
-        public MainGame()
+        MenuMain parent;
+
+        public MainGame(MenuMain parent)
         {
             InitializeComponent();
+            this.parent = parent;
+            
 
 
             //double buffer za da nema flicker
@@ -37,7 +42,7 @@ namespace commando
                BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
 
 
-            scene = new Scene();
+            scene = new Scene(this);
 
             
             Initialize_Timer();
@@ -67,7 +72,7 @@ namespace commando
         // framerate timer
         void Initialize_Timer()
         {
-            Clock = new Timer();
+            Clock = new System.Windows.Forms.Timer();
             Clock.Interval = Interval;
             Clock.Tick += new System.EventHandler(this.ClockTick);
             Clock.Start();           
@@ -115,6 +120,16 @@ namespace commando
                 space = false;
 
             }
+        }
+
+
+        // Player death
+        public void Kill()
+        {
+            scene.player.SpeedX = 0;
+            scene.player.SpeedY = 0;
+            new Thread(() => new GameOver(scene.Score, parent).ShowDialog()).Start();
+            this.Close();
         }
 
         private void MainGame_Load(object sender, EventArgs e)

@@ -50,7 +50,7 @@ namespace commando
         // Diffrent movement for different objects
         public void Move()
         {
-            if (rand.Next(1, 120) == 1)
+            if (!(this is Bullet) && rand.Next(1, 120) == 1)
             {
                 this.SpeedX*=-1;
             }

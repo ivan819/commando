@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameOver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameOver.Designer.cs">
+      <DependentUpon>GameOver.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HighScoresTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HighScoresTable.Designer.cs">
+      <DependentUpon>HighScoresTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Objects\Bullet.cs" />
     <Compile Include="Objects\Enemy.cs" />
     <Compile Include="Objects\Explosion.cs" />
@@ -70,6 +82,12 @@
     <Compile Include="Utils\ScoreHolderClass.cs" />
     <Compile Include="Utils\ScoreNamePair.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <EmbeddedResource Include="GameOver.resx">
+      <DependentUpon>GameOver.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HighScoresTable.resx">
+      <DependentUpon>HighScoresTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainGame.resx">
       <DependentUpon>MainGame.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bitmap1.bmp" />
+    <None Include="Resources\dark-green-camo.gif" />
     <None Include="Resources\red.png" />
     <None Include="Resources\blue.png" />
     <None Include="Resources\background.png" />

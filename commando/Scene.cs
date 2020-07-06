@@ -41,9 +41,11 @@ namespace commando
         public int ImageOffset;
 
         public Random rand = new Random();
+        public MainGame parent;
 
-        public Scene()
+        public Scene(MainGame parent)
         {
+            this.parent = parent;
             this.enemies = new List<Enemy>();
             this.bullets = new List<Bullet>();
             this.powerups = new List<PowerUp>();
@@ -196,7 +198,10 @@ namespace commando
                     // Player death
                     if (player.Health <= 0)
                     {
-                        player.Kill();
+                        parent.Clock.Stop();
+                        parent.Kill();
+                       
+
                     }
 
                 }
@@ -219,7 +224,9 @@ namespace commando
                     }
                     if (player.Health <= 0)
                     {
-                        player.Kill();
+                        parent.Clock.Stop();
+                        parent.Kill();
+                     
                     }
                     MarkForDeletion(bullet);
                 }

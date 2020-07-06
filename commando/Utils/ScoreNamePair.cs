@@ -7,9 +7,9 @@ namespace commando
     public class ScoreNamePair : IComparable
     {
         public string name;
-        public int score;
+        public long score;
 
-        public ScoreNamePair(string name, int score)
+        public ScoreNamePair(string name, long score)
         {
             this.name = name;
             this.score = score;

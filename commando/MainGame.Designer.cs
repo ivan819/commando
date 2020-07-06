@@ -35,26 +35,31 @@
             // panel1
             // 
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(600, 700);
+            this.panel1.Size = new System.Drawing.Size(800, 862);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // health
             // 
             this.health.AutoSize = true;
-            this.health.Location = new System.Drawing.Point(13, 707);
+            this.health.Location = new System.Drawing.Point(17, 870);
+            this.health.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.health.Name = "health";
-            this.health.Size = new System.Drawing.Size(0, 13);
+            this.health.Size = new System.Drawing.Size(0, 17);
             this.health.TabIndex = 1;
             // 
             // MainGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 700);
+            this.ClientSize = new System.Drawing.Size(800, 862);
             this.Controls.Add(this.health);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MaximizeBox = false;
             this.Name = "MainGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
